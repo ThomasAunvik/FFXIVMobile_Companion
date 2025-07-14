@@ -6,28 +6,28 @@ namespace FFXIVMobile_Companion
 {
     internal class Functions
     {
-		public static void DownloadFile(string address, string filename)
-		{
-			using var client = new HttpClient();
-			using var s = client.GetStreamAsync(address);
-			using var fs = new FileStream(filename, FileMode.Create);
-			s.Result.CopyTo(fs);
-		}
+        public static void DownloadFile(string address, string filename)
+        {
+            using var client = new HttpClient();
+            using var s = client.GetStreamAsync(address);
+            using var fs = new FileStream(filename, FileMode.Create);
+            s.Result.CopyTo(fs);
+        }
 
         public static async Task<Status> GetRemoteStatus()
         {
             try
             {
-				using var client = new HttpClient();
-				var data = await client.GetStringAsync("http://aida.moe/ffxiv_mobile/status.json");
+                using var client = new HttpClient();
+                var data = await client.GetStringAsync("http://aida.moe/ffxiv_mobile/status.json");
 
-				var options = new JsonSerializerOptions
+                var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() }
                 };
 
-				var statusContext = new StatusContext(options);
+                var statusContext = new StatusContext(options);
 
                 return JsonSerializer.Deserialize(data, statusContext.Status);
             }

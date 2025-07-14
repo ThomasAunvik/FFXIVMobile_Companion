@@ -79,7 +79,7 @@ namespace FFXIVMobile_Companion
         [JsonPropertyName("ProgramMD5")]
         public string ProgramMD5 { get; set; }
 
-		[JsonPropertyName("TranslationMD5")]
+        [JsonPropertyName("TranslationMD5")]
         public string TranslationMD5 { get; set; }
 
         [JsonPropertyName("ProgramUpdateURL")]
@@ -92,11 +92,11 @@ namespace FFXIVMobile_Companion
         public string Codename { get; set; }
     };
 
-	[JsonSourceGenerationOptions(WriteIndented = true)]
-	[JsonSerializable(typeof(Status))]
-	internal partial class StatusContext : JsonSerializerContext
-	{
+    [JsonSourceGenerationOptions(WriteIndented = true)]
+    [JsonSerializable(typeof(Status))]
+    internal partial class StatusContext : JsonSerializerContext
+    {
 
-	}
+    }
 
 }

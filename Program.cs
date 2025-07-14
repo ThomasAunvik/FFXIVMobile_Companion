@@ -62,7 +62,7 @@ namespace FFXIVMobile_Companion
             //https://umamusume.com/characters
             WriteLine(Color.Yellow + $"[Built on " + RemoteStatus.BuildDate + " | Codename: " + Functions.TerminalURL(RemoteStatus.Codename, "https://umamusume.com/characters/" + RemoteStatus.Codename.ToLower().Replace(" ",""))  + "]");
 
-			WriteLine($"Entry Assembly: {Environment.ProcessPath}");
+            WriteLine($"Entry Assembly: {Environment.ProcessPath}");
             /*
             ██    ██ ██████  ██████   █████  ████████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
             ██    ██ ██   ██ ██   ██ ██   ██    ██    ██          ██      ██   ██ ██      ██      ██  ██
@@ -70,8 +70,8 @@ namespace FFXIVMobile_Companion
             ██    ██ ██      ██   ██ ██   ██    ██    ██          ██      ██   ██ ██      ██      ██  ██
              ██████  ██      ██████  ██   ██    ██    ███████      ██████ ██   ██ ███████  ██████ ██   ██
             */
-			
-			string CurrentMD5 = Functions.CalculateMD5(Environment.ProcessPath);
+            
+            string CurrentMD5 = Functions.CalculateMD5(Environment.ProcessPath);
             if (File.Exists(Environment.ProcessPath + ".bak"))
             {
                 File.Delete(Environment.ProcessPath + ".bak");
@@ -351,7 +351,7 @@ namespace FFXIVMobile_Companion
             WriteLine(Environment.NewLine);
             /*
             adb\adb.exe -s %ip% shell rm /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
-	        adb\adb.exe -s %ip% shell echo "[Internationalization]\\nCulture=%lang%" ">>" /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
+            adb\adb.exe -s %ip% shell echo "[Internationalization]\\nCulture=%lang%" ">>" /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
             */
             if (IsGameOpen())
             {
@@ -391,7 +391,7 @@ namespace FFXIVMobile_Companion
             WriteLine(Environment.NewLine);
             /*
             adb\adb.exe -s %ip% shell rm /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
-	        adb\adb.exe -s %ip% shell echo "[Internationalization]\\nCulture=%lang%" ">>" /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
+            adb\adb.exe -s %ip% shell echo "[Internationalization]\\nCulture=%lang%" ">>" /storage/emulated/0/Android/data/com.tencent.tmgp.fmgame/files/UE4Game/FGame/FGame/Saved/Config/Android/GameUserSettings.ini
             */
             if (IsGameOpen())
             {
