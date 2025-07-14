@@ -1,54 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FFXIVMobile_Companion
 {
     internal class Functions
     {
-        public static void DownloadFile(string address, string filename)
-        {
-            var cURL_Process = new Process();
-            var cURL_StartInfo = new ProcessStartInfo("cmd.exe", @"/C curl -L " + address  + " --output " + filename);
-            cURL_StartInfo.UseShellExecute = true;
-            cURL_StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
-            cURL_Process.StartInfo = cURL_StartInfo;
+		public static void DownloadFile(string address, string filename)
+		{
+			using var client = new HttpClient();
+			using var s = client.GetStreamAsync(address);
+			using var fs = new FileStream(filename, FileMode.Create);
+			s.Result.CopyTo(fs);
+		}
 
-            cURL_Process.Start();
-            cURL_Process.WaitForExit();
-        }
-
-        public static Status GetRemoteStatus()
+        public static async Task<Status> GetRemoteStatus()
         {
             try
             {
-                string data;
-                using (MyWebClient client = new MyWebClient { Encoding = Encoding.UTF8, Timeout = 10000, Proxy = null })
-                {
-                    data = client.DownloadString("http://aida.moe/ffxiv_mobile/status.json");
-                }
+				using var client = new HttpClient();
+				var data = await client.GetStringAsync("http://aida.moe/ffxiv_mobile/status.json");
 
-                var options = new JsonSerializerOptions
+				var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() }
                 };
 
-                return JsonSerializer.Deserialize<Status>(data, options);
+				var statusContext = new StatusContext(options);
+
+                return JsonSerializer.Deserialize(data, statusContext.Status);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+				Console.WriteLine(e.ToString());
                 return default;
             }
         }

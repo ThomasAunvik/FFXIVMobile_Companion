@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FFXIVMobile_Companion
 {
@@ -83,7 +79,7 @@ namespace FFXIVMobile_Companion
         [JsonPropertyName("ProgramMD5")]
         public string ProgramMD5 { get; set; }
 
-        [JsonPropertyName("TranslationMD5")]
+		[JsonPropertyName("TranslationMD5")]
         public string TranslationMD5 { get; set; }
 
         [JsonPropertyName("ProgramUpdateURL")]
@@ -96,27 +92,11 @@ namespace FFXIVMobile_Companion
         public string Codename { get; set; }
     };
 
-    public class MyWebClient : WebClient
-    {
-        private int _timeout;
+	[JsonSourceGenerationOptions(WriteIndented = true)]
+	[JsonSerializable(typeof(Status))]
+	internal partial class StatusContext : JsonSerializerContext
+	{
 
-        public int Timeout
-        {
-            get { return _timeout; }
+	}
 
-            set { _timeout = value; }
-        }
-
-        public MyWebClient()
-        {
-            Timeout = 60000;
-        }
-
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            dynamic result = base.GetWebRequest(address);
-            result.Timeout = _timeout;
-            return result;
-        }
-    }
 }

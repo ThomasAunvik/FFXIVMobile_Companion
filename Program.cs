@@ -13,15 +13,9 @@ conflicts, and that would be a very sad thing. - Aeolia Schenberg, 2091 A.D.
 　　　　　ヽ､.＿＿__r',／
  */
 
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Channels;
-using System.Threading;
 
 namespace FFXIVMobile_Companion
 {
@@ -37,7 +31,7 @@ namespace FFXIVMobile_Companion
         public static Random RandomNumber = new Random();
         public static Status RemoteStatus = new Status();
 
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             if (args.Length > 0)
             {
@@ -64,10 +58,11 @@ namespace FFXIVMobile_Companion
             WriteLine("Final Fantasy XIV Mobile Companion (Created by Aida Enna)");
             WriteLine("Source/Credits: " + Color.Blue + "https://github.com/Aida-Enna/FFXIVMobile_Companion");
             var entryAssembly = Assembly.GetEntryAssembly();
-            RemoteStatus = Functions.GetRemoteStatus();
+            RemoteStatus = await Functions.GetRemoteStatus();
             //https://umamusume.com/characters
             WriteLine(Color.Yellow + $"[Built on " + RemoteStatus.BuildDate + " | Codename: " + Functions.TerminalURL(RemoteStatus.Codename, "https://umamusume.com/characters/" + RemoteStatus.Codename.ToLower().Replace(" ",""))  + "]");
 
+			WriteLine($"Entry Assembly: {Environment.ProcessPath}");
             /*
             ██    ██ ██████  ██████   █████  ████████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
             ██    ██ ██   ██ ██   ██ ██   ██    ██    ██          ██      ██   ██ ██      ██      ██  ██
@@ -75,10 +70,11 @@ namespace FFXIVMobile_Companion
             ██    ██ ██      ██   ██ ██   ██    ██    ██          ██      ██   ██ ██      ██      ██  ██
              ██████  ██      ██████  ██   ██    ██    ███████      ██████ ██   ██ ███████  ██████ ██   ██
             */
-            string CurrentMD5 = Functions.CalculateMD5(entryAssembly.Location);
-            if (File.Exists(entryAssembly.Location + ".bak"))
+			
+			string CurrentMD5 = Functions.CalculateMD5(Environment.ProcessPath);
+            if (File.Exists(Environment.ProcessPath + ".bak"))
             {
-                File.Delete(entryAssembly.Location + ".bak");
+                File.Delete(Environment.ProcessPath + ".bak");
             }
 #if !DEBUG
             if (CurrentMD5 != RemoteStatus.ProgramMD5)
@@ -86,16 +82,16 @@ namespace FFXIVMobile_Companion
                 try
                 {
                     WriteLine("A new version is available, downloading now...");
-                    File.Move(entryAssembly.Location, entryAssembly.Location + ".bak");
+                    File.Move(Environment.ProcessPath, Environment.ProcessPath + ".bak");
                     Functions.DownloadFile(RemoteStatus.ProgramUpdateURL, "FFXIVMobile_Companion.exe");
-                    CurrentMD5 = Functions.CalculateMD5(entryAssembly.Location);
+                    CurrentMD5 = Functions.CalculateMD5(Environment.ProcessPath);
                     if (CurrentMD5 != RemoteStatus.ProgramMD5)
                     {
                         WriteLine(Color.Red + "Updating failed! Please download the latest version at " + Color.Blue + "https://github.com/Aida-Enna/FFXIVMobile_Companion");
                     }
                     else
                     {
-                        Process.Start(entryAssembly.Location); // to start new instance of application
+                        Process.Start(Environment.ProcessPath); // to start new instance of application
                         Environment.Exit(0);
                     }
                 }
@@ -119,8 +115,9 @@ namespace FFXIVMobile_Companion
                 {
                     Functions.DownloadFile("https://github.com/Aida-Enna/FFXIVMobile_Companion/blob/main/extras/adb.zip?raw=true", Path.Combine(Directory.GetCurrentDirectory(), "adb.zip"));
                 }
-                catch
+                catch (Exception e)
                 {
+					WriteLine(e.ToString());
                     WriteLine(Color.Red + "Failed to download ADB! Please re-extract the zip file you downloaded and make sure to extract -all- the files!");
                     WriteLine(Color.Red + "The program will now exit. Please try again after fixing the above issue.");
                     Environment.Exit(1);
