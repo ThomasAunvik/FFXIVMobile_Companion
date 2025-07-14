@@ -95,7 +95,7 @@ namespace FFXIVMobile_Companion
                         Environment.Exit(0);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     WriteLine(Color.Red + "Updating failed! Please download the latest version at " + Color.Blue + "https://github.com/Aida-Enna/FFXIVMobile_Companion");
                 }
@@ -115,9 +115,8 @@ namespace FFXIVMobile_Companion
                 {
                     Functions.DownloadFile("https://github.com/Aida-Enna/FFXIVMobile_Companion/blob/main/extras/adb.zip?raw=true", Path.Combine(Directory.GetCurrentDirectory(), "adb.zip"));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-					WriteLine(e.ToString());
                     WriteLine(Color.Red + "Failed to download ADB! Please re-extract the zip file you downloaded and make sure to extract -all- the files!");
                     WriteLine(Color.Red + "The program will now exit. Please try again after fixing the above issue.");
                     Environment.Exit(1);

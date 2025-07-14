@@ -31,9 +31,8 @@ namespace FFXIVMobile_Companion
 
                 return JsonSerializer.Deserialize(data, statusContext.Status);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-				Console.WriteLine(e.ToString());
                 return default;
             }
         }
